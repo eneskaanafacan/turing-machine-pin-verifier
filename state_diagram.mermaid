@@ -1,0 +1,36 @@
+stateDiagram-v2
+    [*] --> Q0 : Başlangıç
+    
+    Q0 --> Q1 : #/#,R
+    
+    Q1 --> Q2 : 0-9/X,R<br/>(karakteri hatırla)
+    Q1 --> Q1 : X/X,R
+    Q1 --> Q6 : #/#,L
+    
+    Q2 --> Q2 : 0-9,X,Y/0-9,X,Y,R
+    Q2 --> Q3 : #/#,R
+    
+    Q3 --> Q4 : 0-9/Y,L<br/>(karakter eşleşiyorsa)
+    Q3 --> Q3 : Y/Y,R
+    Q3 --> REJECT : #/#,S<br/>(eşleşme yok)
+    Q3 --> REJECT : */*,S<br/>(karakter uyuşmazlığı)
+    
+    Q4 --> Q4 : 0-9,X,Y,#/0-9,X,Y,#,L
+    Q4 --> Q5 : B/B,R
+    
+    Q5 --> Q5 : Y,0-9,#/Y,0-9,#,R
+    Q5 --> Q1 : X/X,S
+    
+    Q6 --> Q6 : X/X,L
+    Q6 --> ACCEPT : #/#,S
+    Q6 --> REJECT : 0-9/0-9,S
+    
+    ACCEPT --> [*] : ✓ PIN Doğru
+    REJECT --> [*] : ✗ PIN Hatalı
+    
+    note right of Q1 : Kullanıcı PIN karakteri<br/>seçimi ve işaretleme
+    note right of Q2 : İkinci # sembolüne<br/>kadar hareket
+    note right of Q3 : Sistem PIN kısmında<br/>eşleşen karakter arama
+    note right of Q4 : Banda başa dönüş
+    note right of Q5 : Sıradaki işlenmemiş<br/>karaktere gitme
+    note right of Q6 : Tüm karakterlerin<br/>işlenme kontrolü
